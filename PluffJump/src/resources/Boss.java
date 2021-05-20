@@ -11,13 +11,15 @@ public class Boss extends Character{
 	private double dy = 0;
 	private ArrayList<Redicicle> ri;
 	private Redicicle temp;
-	private int icicleDelay = 7003;
+	private int icicleDelay = 400;
 	private long shootTime = 0;
+	private Player player;
 	
-	public Boss(int hp) {
+	public Boss(int hp, Player player) {
 		super(900, -10);
 		this.hp = hp;
 		ri = new ArrayList<Redicicle>();
+		this.player = player;
 	}
 	
 	public void tick() {
@@ -27,7 +29,7 @@ public class Boss extends Character{
 		
 		if (System.currentTimeMillis() - shootTime > icicleDelay) {
 			shootTime = System.currentTimeMillis();
-			ri.add(new Redicicle(900, (int) super.y + 200, 5, 2));
+			ri.add(new Redicicle(900, (int) player.getY() + 100, 6, 3));
 		}
 		
 		for (int i = 0; i < ri.size(); i++) {

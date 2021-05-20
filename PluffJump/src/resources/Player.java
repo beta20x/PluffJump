@@ -26,7 +26,7 @@ public class Player extends Character{
 	
 	public Player(Game game, float x, float y) {
 		super(x, y);
-		c = new Controller();
+		c = new Controller(this);
 		this.game = game;
 		dy = 20;
 		shootTime = 0;
@@ -54,7 +54,7 @@ public class Player extends Character{
 		if (System.currentTimeMillis() - iTime > iDelay && !c.ibf) {
 			iTime = System.currentTimeMillis();
 			iDelay -= 1;
-			c.addIcicle(new Icicle(1100, (int)(Math.random() * (701)), hazardSpeed + (c.getScore() / 4), 4));
+			c.addIcicle(new Icicle(1100, (int)(Math.random() * (701)), hazardSpeed + (c.getScore() / 5), 4));
 			
 		}
 		for (int i = 0; i < c.getIcicleList().size(); i++) {

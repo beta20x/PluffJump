@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import resources.Boss;
 import resources.Bullet;
 import resources.Icicle;
+import resources.Player;
 
 import java.awt.Graphics;
 
@@ -18,8 +19,11 @@ public class Controller {
 	private boolean scoreUp;
 	private Boss boss;
 	public boolean ibf;
+	private Player player;
+	private int prevBossScore = 0;
 	
-	public Controller (){		
+	public Controller (Player player){
+		this.player = player;
 		b = new ArrayList<Bullet>();
 		ic = new ArrayList<Icicle>();
 		score = 0;
@@ -65,7 +69,7 @@ public class Controller {
 			score++; 
 			scoreUp = false;  
 		}
-		if (!ibf && score % 7 == 0 && score > 0) {
+		if (!ibf && score % 8 == 0 && score > 0 && score - prevBossScore > 5) {
 			summonBoss();
 			ibf = true;
 		}
@@ -81,6 +85,7 @@ public class Controller {
 		if (ibf && boss.getHp() <= 0) {
 			ibf = false;
 			score += 4;
+			prevBossScore = score;
 		}
 		if (ibf) {
 			for (int i = 0; i < boss.getShots().size(); i++) {
@@ -135,7 +140,7 @@ public class Controller {
 		return score;
 	}
 	private void summonBoss() {
-		boss = new Boss(score * 20);
+		boss = new Boss(score * 15, player);
 	}
 	
 	public Boss getBoss() {
