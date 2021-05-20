@@ -29,7 +29,7 @@ public class Boss extends Character{
 		
 		if (System.currentTimeMillis() - shootTime > icicleDelay) {
 			shootTime = System.currentTimeMillis();
-			ri.add(new Redicicle(900, (int) player.getY() + 100, 6, 3));
+			ri.add(new Redicicle(900, (int) player.getY() + 50, 6, 3));
 		}
 		
 		for (int i = 0; i < ri.size(); i++) {
