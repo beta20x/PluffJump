@@ -45,8 +45,8 @@ public class Icicle{
 		return hp;
 	}
 	
-	public void losehp() {
-		hp--;
+	public void losehp(int i) {
+		hp -= i;
 	}
 }
 

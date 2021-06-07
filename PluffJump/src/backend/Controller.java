@@ -2,6 +2,7 @@ package backend;
 
 import java.util.ArrayList;
 
+import powerUps.PowerUp;
 import resources.Boss;
 import resources.Bullet;
 import resources.Icicle;
@@ -21,17 +22,27 @@ public class Controller {
 	public boolean ibf;
 	private Player player;
 	private int prevBossScore = 0;
+	private int scoreBooster;
+	private ArrayList<PowerUp> powerups;
+	private PowerUp tempPU;
 	
 	public Controller (Player player){
 		this.player = player;
 		b = new ArrayList<Bullet>();
 		ic = new ArrayList<Icicle>();
+		powerups = new ArrayList<PowerUp>();
 		score = 0;
 		scoreUp = false;
 		ibf = false;
+		scoreBooster = 0;
 	}
-	
+
 	public void tick() {
+		if (player.getEff() == 0) {
+			scoreBooster = 1;
+		} else {
+			scoreBooster = 0;
+		}
 		for (int i = 0; i < b.size(); i++) {
 			tempBullet = b.get(i);
 			
@@ -53,7 +64,7 @@ public class Controller {
 				
 				if (tempIcicle.getBounds().intersects(tempBullet.getBounds())) {
 					b.remove(tempBullet);
-					tempIcicle.losehp();
+					tempIcicle.losehp(player.getDealtDamage());
 				}
 				if (tempIcicle.gethp() <= 0) {
 					removeIcicle(tempIcicle);
@@ -65,8 +76,19 @@ public class Controller {
 			
 			tempIcicle.tick();
 		}
+		
+		for (int i = 0; i < powerups.size(); i++) {
+			tempPU = powerups.get(i);
+			
+			if (tempPU.getBounds().intersects(player.getBounds()) || tempPU.getX() < -10) {
+				powerups.remove(tempPU);
+			}
+			
+			tempPU.tick();
+		}
+		
 		if (scoreUp) {
-			score++; 
+			score += 1 + scoreBooster; 
 			scoreUp = false;  
 		}
 		if (!ibf && score % 8 == 0 && score > 0 && score - prevBossScore > 5) {
@@ -78,13 +100,13 @@ public class Controller {
 			for (int i = 0; i < b.size(); i++) {
 				if (boss.getBounds().intersects(b.get(i).getBounds())) {
 					b.remove(i);
-					boss.losehp();
+					boss.losehp(player.getDealtDamage());
 				}
 			}
 		}
 		if (ibf && boss.getHp() <= 0) {
 			ibf = false;
-			score += 4;
+			score += 4 + scoreBooster;
 			prevBossScore = score;
 		}
 		if (ibf) {
@@ -114,6 +136,11 @@ public class Controller {
 		if (ibf && boss.getHp() > 0) {
 			boss.render(g);
 		}
+		for (int i = 0; i < powerups.size(); i++) {
+			tempPU = powerups.get(i);
+			
+			tempPU.render(g);
+		}
 	}
 	
 	public void addBullet(Bullet bullet) {
@@ -136,11 +163,23 @@ public class Controller {
 		return ic;
 	}
 	
+	public ArrayList<PowerUp> getPowerUps(){
+		return powerups;
+	}
+	
+	public void addPowerUp(PowerUp p) {
+		powerups.add(p);
+	}
+	
+	public void removePowerUp(int i) {
+		powerups.remove(i);
+	}
+	
 	public int getScore() {
 		return score;
 	}
 	private void summonBoss() {
-		boss = new Boss(score * 15, player);
+		boss = new Boss(score * 10, player);
 	}
 	
 	public Boss getBoss() {

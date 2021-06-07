@@ -10,7 +10,7 @@ public class GameState extends State{
 	private Scoreboard scoreboard;
 	
 	public GameState(Game game) {
-		player = new Player(game, 20, 200);
+		player = new Player(game, 20, 200, 50, 1);
 		scoreboard = new Scoreboard(player);
 	}
 	

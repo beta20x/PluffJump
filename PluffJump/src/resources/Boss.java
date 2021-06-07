@@ -11,7 +11,7 @@ public class Boss extends Character{
 	private double dy = 0;
 	private ArrayList<Redicicle> ri;
 	private Redicicle temp;
-	private int icicleDelay = 400;
+	private int icicleDelay = 550;
 	private long shootTime = 0;
 	private Player player;
 	
@@ -29,7 +29,7 @@ public class Boss extends Character{
 		
 		if (System.currentTimeMillis() - shootTime > icicleDelay) {
 			shootTime = System.currentTimeMillis();
-			ri.add(new Redicicle(900, (int) player.getY() + 50, 6, 3));
+			ri.add(new Redicicle(900, (int) super.y + 200, 6, 3));
 		}
 		
 		for (int i = 0; i < ri.size(); i++) {
@@ -60,8 +60,8 @@ public class Boss extends Character{
 		return new Rectangle((int)super.x, (int)super.y, Assets.boss.getWidth(), Assets.boss.getHeight());
 	}
 	
-	public void losehp() {
-		hp--;
+	public void losehp(int amt) {
+		hp -= amt;
 	}
 	
 	public ArrayList<Redicicle> getShots(){
