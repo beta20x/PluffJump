@@ -13,13 +13,11 @@ public class Boss extends Character{
 	private Redicicle temp;
 	private int icicleDelay = 550;
 	private long shootTime = 0;
-	private Player player;
 	
 	public Boss(int hp, Player player) {
 		super(900, -10);
 		this.hp = hp;
 		ri = new ArrayList<Redicicle>();
-		this.player = player;
 	}
 	
 	public void tick() {

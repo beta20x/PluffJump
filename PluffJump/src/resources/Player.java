@@ -1,7 +1,7 @@
 package resources;           
  
+import java.awt.Color;
 import java.awt.Graphics;
-import java.util.ArrayList;
 import java.awt.Rectangle;
 import java.lang.System;
 import java.lang.Math;
@@ -128,7 +128,7 @@ public class Player extends Character{
 			}
 		}
 		if (System.currentTimeMillis() - puTime > puDelay) {
-			int rando = (int)(Math.random() * 3);
+			int rando = (int)(Math.random() * 2);
 			if (rando == 0) {
 				c.addPowerUp(new ScoreBooster(2));
 			} else if (rando == 1) {
@@ -153,8 +153,14 @@ public class Player extends Character{
 
 	@Override
 	public void render(Graphics g) {
-		g.drawImage(Assets.player, (int) x, (int) y, null);
-		c.render(g);
+		c.render(g);	
+		if (eff == -1) {
+			g.drawImage(Assets.player, (int) x, (int) y, null);
+		} else if (eff == 0) {
+			g.drawImage(Assets.player, (int) x, (int) y, new Color(252, 255, 65), null);
+		} else if (eff == 1) {
+			g.drawImage(Assets.player, (int) x, (int) y, new Color(255, 100, 65), null);
+		}
 	}
 	
 

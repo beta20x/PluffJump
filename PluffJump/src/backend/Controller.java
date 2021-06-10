@@ -3,6 +3,7 @@ package backend;
 import java.util.ArrayList;
 
 import powerUps.PowerUp;
+import resources.Background;
 import resources.Boss;
 import resources.Bullet;
 import resources.Icicle;
@@ -25,9 +26,11 @@ public class Controller {
 	private int scoreBooster;
 	private ArrayList<PowerUp> powerups;
 	private PowerUp tempPU;
+	private Background background;
 	
 	public Controller (Player player){
 		this.player = player;
+		background = new Background(7);
 		b = new ArrayList<Bullet>();
 		ic = new ArrayList<Icicle>();
 		powerups = new ArrayList<PowerUp>();
@@ -38,6 +41,7 @@ public class Controller {
 	}
 
 	public void tick() {
+		background.tick();
 		if (player.getEff() == 0) {
 			scoreBooster = 1;
 		} else {
@@ -87,11 +91,11 @@ public class Controller {
 			tempPU.tick();
 		}
 		
-		if (scoreUp) {
+		if (scoreUp) {                      
 			score += 1 + scoreBooster; 
 			scoreUp = false;  
 		}
-		if (!ibf && score % 8 == 0 && score > 0 && score - prevBossScore > 5) {
+		if (!ibf && (score % 8 == 0 || score % 9 == 0) && score > 0 && score - prevBossScore > 5) {
 			summonBoss();
 			ibf = true;
 		}
@@ -122,6 +126,7 @@ public class Controller {
 	}
 	
 	public void render(Graphics g) {
+		background.render(g);
 		for (int i = 0; i < b.size(); i++) {
 			tempBullet = b.get(i);
 			

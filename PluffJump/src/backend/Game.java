@@ -29,7 +29,7 @@ public class Game implements Runnable{
 		
 	}
 
-	private void init(String title){
+	private void init(String title) throws InterruptedException {
 		
 		display = new Display(title, width, height);
 		display.getFrame().addKeyListener(keyManager);
@@ -67,7 +67,11 @@ public class Game implements Runnable{
 	
 	public void run(){
 		
-		init(title);
+		try {
+			init(title);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 		
 		int fps = 90;
 		double timePerTick = 1000000000 / fps;
